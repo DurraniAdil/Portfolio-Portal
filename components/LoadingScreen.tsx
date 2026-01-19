@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getAssetPath } from '../utils/assetPath';
 
 interface LoadingScreenProps {
   onComplete: () => void;
@@ -12,6 +13,15 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
     setIsPlaying(false);
     setTimeout(onComplete, 500);
   };
+
+  useEffect(() => {
+    const fallbackTimer = setTimeout(() => {
+      setIsPlaying(false);
+      onComplete();
+    }, 5000);
+
+    return () => clearTimeout(fallbackTimer);
+  }, [onComplete]);
 
   return (
     <AnimatePresence>
@@ -28,9 +38,10 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
             muted
             playsInline
             onEnded={handleVideoEnd}
+            onError={handleVideoEnd}
             className="w-full h-full object-cover"
           >
-            <source src="/media/loading-screen.mp4" type="video/mp4" />
+            <source src={getAssetPath('media/loading-screen.mp4')} type="video/mp4" />
           </video>
         </motion.div>
       )}

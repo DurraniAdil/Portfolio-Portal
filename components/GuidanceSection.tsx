@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import { getAssetPath } from '../utils/assetPath';
 
 const GuidanceSection: React.FC = () => {
   return (
@@ -48,7 +49,7 @@ const GuidanceSection: React.FC = () => {
                 playsInline
                 className="w-full h-48 md:h-64 lg:h-72 object-cover"
               >
-                <source src="/media/os-guide.mp4" type="video/mp4" />
+                <source src={getAssetPath('media/os-guide.mp4')} type="video/mp4" />
               </video>
 
               {/* overlay */}
@@ -64,7 +65,6 @@ const GuidanceSection: React.FC = () => {
                 </p>
               </div>
 
-              {/* Glow effect on hover */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none shadow-[inset_0_0_40px_rgba(34,197,94,0.2)]" />
             </div>
           </motion.div>
@@ -85,7 +85,7 @@ const GuidanceSection: React.FC = () => {
                 playsInline
                 className="w-full h-48 md:h-64 lg:h-72 object-cover"
               >
-                <source src="/media/app-guide.mp4" type="video/mp4" />
+                <source src={getAssetPath('media/app-guide.mp4')} type="video/mp4" />
               </video>
 
               {/* overlay */}

@@ -1,12 +1,13 @@
 import { Persona } from './types';
+import { getAssetPath } from './utils/assetPath';
 
 export const PERSONAS: Persona[] = [
   {
     id: 'poet',
     title: 'The Poet',
     tagline: 'Weaving words into worlds.',
-    imageUrl: '/media/poet.png',
-    themeColor: '#ec4899', // Pink vibe
+    imageUrl: getAssetPath('media/poet.png'),
+    themeColor: '#ec4899',
     bgGradient: 'from-pink-900 via-slate-900 to-black',
     prompt: '',
   },
@@ -14,8 +15,8 @@ export const PERSONAS: Persona[] = [
     id: 'hrpm',
     title: 'The Manager',
     tagline: 'Orchestrating people and potential.',
-    imageUrl: '/media/manager.png',
-    themeColor: '#eab308', // Yellow vibe
+    imageUrl: getAssetPath('media/manager.png'),
+    themeColor: '#eab308',
     bgGradient: 'from-yellow-900 via-slate-900 to-black',
     prompt: '',
   },
@@ -23,8 +24,8 @@ export const PERSONAS: Persona[] = [
     id: 'webdev',
     title: 'The Web Developer',
     tagline: 'Building the digital frontier.',
-    imageUrl: '/media/developer.png',
-    themeColor: '#22c55e', // Green vibe
+    imageUrl: getAssetPath('media/developer.png'),
+    themeColor: '#22c55e',
     bgGradient: 'from-green-900 via-slate-900 to-black',
     prompt: '',
   }
@@ -36,4 +37,4 @@ export const LINKS = {
 };
 
 export const SECTION_TRANSITION_DURATION = 0.8;
-export const SLIDE_DURATION = 7000; //seven seconds 
+export const SLIDE_DURATION = 7000;

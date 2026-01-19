@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Smartphone, Monitor, ArrowRight, ExternalLink, Minimize2 } from 'lucide-react';
 import { LINKS, PERSONAS } from '../constants';
 import { Side } from '../types';
+import { getAssetPath } from '../utils/assetPath';
 
 const SplitSection: React.FC = () => {
   const [expandedSide, setExpandedSide] = useState<Side | null>(null);
@@ -55,7 +56,7 @@ const SplitSection: React.FC = () => {
           className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${expandedSide === Side.APP ? 'opacity-40 scale-105' : 'opacity-20 grayscale'}`}
           style={{ transform: `translate(${mousePos.x * -0.5}px, ${mousePos.y * -0.5}px) scale(1.1)` }}
         >
-          <source src="/media/app-bg.mp4" type="video/mp4" />
+          <source src={getAssetPath('media/app-bg.mp4')} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
 
@@ -87,7 +88,7 @@ const SplitSection: React.FC = () => {
               style={{ transform: `translate(${mousePos.x * 0.8}px, ${mousePos.y * 0.8}px)` }}
             >
               <div className="w-20 h-20 rounded-full border-2 border-yellow-500/50 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:border-yellow-500 group-hover:shadow-[0_0_30px_rgba(234,179,8,0.4)] transition-all duration-300 bg-black/50 backdrop-blur-sm overflow-hidden">
-                <img src="/media/port-app.png" className="w-full h-full object-cover opacity-80" alt="App Agent" />
+                <img src={getAssetPath('media/port-app.png')} className="w-full h-full object-cover opacity-80" alt="App Agent" />
               </div>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-2 uppercase tracking-widest" style={{ textShadow: `0 0 10px ${appPersona.themeColor}` }}>
                 App Path
@@ -118,7 +119,7 @@ const SplitSection: React.FC = () => {
               </button>
 
               <div className="w-32 h-32 rounded-full border-4 border-yellow-500 flex items-center justify-center mb-8 shadow-[0_0_50px_rgba(234,179,8,0.6)] bg-black/80 overflow-hidden">
-                <img src="/media/port-app.png" className="w-full h-full object-cover" alt="App Agent" />
+                <img src={getAssetPath('media/port-app.png')} className="w-full h-full object-cover" alt="App Agent" />
               </div>
               <h2 className="text-5xl md:text-7xl font-display font-bold text-white mb-6 uppercase" style={{ textShadow: `0 0 20px ${appPersona.themeColor}` }}>
                 App Portfolio
@@ -161,7 +162,7 @@ const SplitSection: React.FC = () => {
           className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${expandedSide === Side.OS ? 'opacity-40 scale-105' : 'opacity-20 grayscale'}`}
           style={{ transform: `translate(${mousePos.x * -0.5}px, ${mousePos.y * -0.5}px) scale(1.1)` }}
         >
-          <source src="/media/os-bg.mp4" type="video/mp4" />
+          <source src={getAssetPath('media/os-bg.mp4')} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
 
@@ -193,7 +194,7 @@ const SplitSection: React.FC = () => {
               style={{ transform: `translate(${mousePos.x * 0.8}px, ${mousePos.y * 0.8}px)` }}
             >
               <div className="w-20 h-20 rounded-full border-2 border-green-500/50 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:border-green-500 group-hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] transition-all duration-300 bg-black/50 backdrop-blur-sm overflow-hidden">
-                <img src="/media/port-os.png" className="w-full h-full object-cover opacity-80" alt="OS Agent" />
+                <img src={getAssetPath('media/port-os.png')} className="w-full h-full object-cover opacity-80" alt="OS Agent" />
               </div>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-2 uppercase tracking-widest" style={{ textShadow: `0 0 10px ${osPersona.themeColor}` }}>
                 OS Path
@@ -224,7 +225,7 @@ const SplitSection: React.FC = () => {
               </button>
 
               <div className="w-32 h-32 rounded-full border-4 border-green-500 flex items-center justify-center mb-8 shadow-[0_0_50px_rgba(34,197,94,0.6)] bg-black/80 overflow-hidden">
-                <img src="/media/port-os.png" className="w-full h-full object-cover" alt="OS Agent" />
+                <img src={getAssetPath('media/port-os.png')} className="w-full h-full object-cover" alt="OS Agent" />
               </div>
               <h2 className="text-5xl md:text-7xl font-display font-bold text-white mb-6 uppercase" style={{ textShadow: `0 0 20px ${osPersona.themeColor}` }}>
                 Durrani OS
