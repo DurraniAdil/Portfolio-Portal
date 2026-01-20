@@ -14,14 +14,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
     setTimeout(onComplete, 500);
   };
 
-  useEffect(() => {
-    const fallbackTimer = setTimeout(() => {
-      setIsPlaying(false);
-      onComplete();
-    }, 5000);
 
-    return () => clearTimeout(fallbackTimer);
-  }, [onComplete]);
 
   return (
     <AnimatePresence>
