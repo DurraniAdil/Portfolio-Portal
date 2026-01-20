@@ -1,11 +1,51 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
 import { getAssetPath } from '../utils/assetPath';
+import { Side } from '../types';
 
-const GuidanceSection: React.FC = () => {
+interface GuidanceSectionProps {
+  onScrollTo: (index: number) => void;
+  onNavigateWithSide: (side: Side) => void;
+}
+
+const GuidanceSection: React.FC<GuidanceSectionProps> = ({ onScrollTo, onNavigateWithSide }) => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const osVideoRef = useRef<HTMLVideoElement>(null);
+  const appVideoRef = useRef<HTMLVideoElement>(null);
+
+  // Sync videos when section becomes visible
+  useEffect(() => {
+    const syncVideos = () => {
+      if (osVideoRef.current && appVideoRef.current) {
+        osVideoRef.current.currentTime = 0;
+        appVideoRef.current.currentTime = 0;
+        osVideoRef.current.play().catch(() => { });
+        appVideoRef.current.play().catch(() => { });
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Small delay to ensure smooth transition
+            setTimeout(syncVideos, 100);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="section-1"
       className="relative w-full h-screen overflow-hidden bg-void-black text-white flex flex-col items-center justify-center px-4 md:px-6"
     >
@@ -41,22 +81,26 @@ const GuidanceSection: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="group relative"
           >
-            <div className="relative rounded-xl overflow-hidden border-2 border-green-500/30 hover:border-green-500/60 transition-all duration-300 bg-black">
+            <div
+              onClick={() => onNavigateWithSide(Side.OS)}
+              className="relative rounded-xl overflow-hidden border-2 border-green-500/30 hover:border-green-500/60 transition-all duration-300 bg-black cursor-pointer"
+            >
               <video
+                ref={osVideoRef}
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full h-48 md:h-64 lg:h-72 object-cover"
+                className="w-full h-48 md:h-64 lg:h-72 object-cover pointer-events-none"
               >
                 <source src={getAssetPath('media/os-guide.mp4')} type="video/mp4" />
               </video>
 
               {/* overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
 
               {/* text */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 pointer-events-none">
                 <h3 className="text-xl md:text-2xl font-display font-bold text-green-400 mb-1">
                   OS Portfolio
                 </h3>
@@ -77,22 +121,26 @@ const GuidanceSection: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="group relative"
           >
-            <div className="relative rounded-xl overflow-hidden border-2 border-yellow-500/30 hover:border-yellow-500/60 transition-all duration-300 bg-black">
+            <div
+              onClick={() => onNavigateWithSide(Side.APP)}
+              className="relative rounded-xl overflow-hidden border-2 border-yellow-500/30 hover:border-yellow-500/60 transition-all duration-300 bg-black cursor-pointer"
+            >
               <video
+                ref={appVideoRef}
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full h-48 md:h-64 lg:h-72 object-cover"
+                className="w-full h-48 md:h-64 lg:h-72 object-cover pointer-events-none"
               >
                 <source src={getAssetPath('media/app-guide.mp4')} type="video/mp4" />
               </video>
 
               {/* overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
 
               {/* text */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 pointer-events-none">
                 <h3 className="text-xl md:text-2xl font-display font-bold text-yellow-400 mb-1">
                   App Portfolio
                 </h3>
@@ -106,23 +154,6 @@ const GuidanceSection: React.FC = () => {
           </motion.div>
 
         </div>
-
-        {/* scroll */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="mt-8 md:mt-12"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-            className="flex flex-col items-center text-gray-500"
-          >
-            <span className="text-[10px] uppercase tracking-[0.2em] mb-2">Scroll to choose</span>
-            <ChevronDown className="w-5 h-5" />
-          </motion.div>
-        </motion.div>
 
       </div>
     </section>

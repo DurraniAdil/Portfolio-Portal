@@ -1,16 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Smartphone, Monitor, ArrowRight, ExternalLink, Minimize2 } from 'lucide-react';
 import { LINKS, PERSONAS } from '../constants';
 import { Side } from '../types';
 import { getAssetPath } from '../utils/assetPath';
 
-const SplitSection: React.FC = () => {
+interface SplitSectionProps {
+  initialSide?: Side | null;
+}
+
+const SplitSection: React.FC<SplitSectionProps> = ({ initialSide = null }) => {
   const [expandedSide, setExpandedSide] = useState<Side | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const appVideoRef = useRef<HTMLVideoElement>(null);
+  const osVideoRef = useRef<HTMLVideoElement>(null);
+
   const appPersona = PERSONAS.find(p => p.id === 'hrpm') || PERSONAS[1];
   const osPersona = PERSONAS.find(p => p.id === 'webdev') || PERSONAS[2];
+
+
+
+  // Sync videos when section becomes visible
+  useEffect(() => {
+    const syncVideos = () => {
+      if (appVideoRef.current && osVideoRef.current) {
+        appVideoRef.current.currentTime = 0;
+        osVideoRef.current.currentTime = 0;
+        appVideoRef.current.play().catch(() => { });
+        osVideoRef.current.play().catch(() => { });
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(syncVideos, 100);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const { clientX, clientY, currentTarget } = e;
@@ -31,6 +70,7 @@ const SplitSection: React.FC = () => {
 
   return (
     <section
+      ref={sectionRef}
       id="section-2"
       className="relative w-full h-screen overflow-hidden bg-void-black flex flex-col md:flex-row"
       onMouseMove={handleMouseMove}
@@ -49,6 +89,7 @@ const SplitSection: React.FC = () => {
       >
         {/* background video */}
         <video
+          ref={appVideoRef}
           autoPlay
           loop
           muted
@@ -155,6 +196,7 @@ const SplitSection: React.FC = () => {
       >
         {/* Background Video Layer */}
         <video
+          ref={osVideoRef}
           autoPlay
           loop
           muted

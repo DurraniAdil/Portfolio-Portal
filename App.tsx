@@ -5,6 +5,7 @@ import GuidanceSection from './components/GuidanceSection';
 import SplitSection from './components/SplitSection';
 import NavigationDots from './components/NavigationDots';
 import LoadingScreen from './components/LoadingScreen';
+import { Side } from './types';
 
 const SECTION_COUNT = 3;
 const SCROLL_THRESHOLD = 30;
@@ -13,12 +14,16 @@ const SCROLL_COOLDOWN = 800;
 const App: React.FC = () => {
   const [currentSection, setCurrentSection] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedSide, setSelectedSide] = useState<Side | null>(null);
   const lastScrollTime = useRef(0);
   const touchStartY = useRef(0);
 
   const handleScroll = useCallback((direction: 'up' | 'down') => {
     const now = Date.now();
     if (now - lastScrollTime.current < SCROLL_COOLDOWN) return;
+
+    // Block scrolling down from section 1 - must use boxes or nav dots
+    if (currentSection === 1 && direction === 'down') return;
 
     if (direction === 'down' && currentSection < SECTION_COUNT - 1) {
       setCurrentSection(prev => prev + 1);
@@ -31,6 +36,13 @@ const App: React.FC = () => {
 
   const onScrollTo = (index: number) => {
     setCurrentSection(index);
+    setSelectedSide(null); // Reset side when navigating via dots
+    lastScrollTime.current = Date.now();
+  };
+
+  const onNavigateWithSide = (side: Side) => {
+    setSelectedSide(side);
+    setCurrentSection(2);
     lastScrollTime.current = Date.now();
   };
 
@@ -107,10 +119,10 @@ const App: React.FC = () => {
                 <HeroSection />
               </div>
               <div className="w-full h-full">
-                <GuidanceSection />
+                <GuidanceSection onScrollTo={onScrollTo} onNavigateWithSide={onNavigateWithSide} />
               </div>
               <div className="w-full h-full">
-                <SplitSection />
+                <SplitSection initialSide={selectedSide} />
               </div>
             </motion.div>
           </motion.main>
